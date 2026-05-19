@@ -23,7 +23,7 @@
   #apiKeyScreen{position:fixed;inset:0;background:var(--bg);background-image:radial-gradient(ellipse at 30% 20%,rgba(100,80,200,.3) 0%,transparent 60%);z-index:2000;display:flex;align-items:center;justify-content:center;}
   .key-box{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:40px 44px;width:480px;max-width:90vw;backdrop-filter:blur(20px);}
   .key-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
-  .key-logo img{height:28px;width:auto;}
+  .key-logo img{height:28px;width:auto;mix-blend-mode:screen;filter:brightness(1.2);}
   .key-logo-divider{width:1px;height:18px;background:var(--border-hi);}
   .key-logo-label{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;}
   .key-title{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.01em;margin-bottom:8px;font-family:var(--serif);}
@@ -38,7 +38,7 @@
 
   header{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:72px;border-bottom:1px solid var(--border);flex-shrink:0;background:rgba(0,0,0,.15);backdrop-filter:blur(8px);}
   .logo{display:flex;align-items:center;gap:12px;}
-  .logo img{height:34px;width:auto;}
+  .logo img{height:34px;width:auto;mix-blend-mode:screen;filter:brightness(1.2);}
   .logo-divider{width:1px;height:22px;background:rgba(255,255,255,.25);margin:0 4px;}
   .logo-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.18em;text-transform:uppercase;}
   .header-right{display:flex;align-items:center;gap:10px;}
@@ -208,7 +208,7 @@
 <div id="apiKeyScreen">
   <div class="key-box">
     <div class="key-logo">
-      <img src="https://verve.com/wp-content/uploads/2023/03/verve-logo-white.svg" alt="Verve" onerror="this.style.display='none'">
+      <img src="data:image/png;base64,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" alt="Verve">
       <div class="key-logo-divider"></div>
       <span class="key-logo-label">Sales Enablement</span>
     </div>
@@ -222,7 +222,7 @@
 
 <header>
   <div class="logo">
-    <img src="https://verve.com/wp-content/uploads/2023/03/verve-logo-white.svg" alt="Verve" onerror="this.style.display='none'">
+    <img src="data:image/png;base64,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" alt="Verve">
     <div class="logo-divider"></div>
     <span class="logo-label">Sales Enablement</span>
   </div>
@@ -425,11 +425,29 @@ const SYSTEM_PROMPT=`You are the Verve EMEA Marketplace Assistant. You help the 
 
 Your users have deep programmatic ad tech backgrounds. Do not explain OpenRTB, SSP/DSP distinctions, PMP/PG mechanics, or TCF/GDPR. Assume technical fluency.
 
-Answer like a genuinely well-briefed colleague who has read every deck. Give full, substantive answers - not a quick paragraph and a pointer to a deck. The team is often on live calls or preparing for meetings and needs real answers they can use immediately.
+You are a genuinely well-briefed senior colleague, not a document retrieval system. Your job is to answer the question properly — using the source knowledge to construct a real, reasoned response — not to recommend what to read.
 
-Structure answers with **bold headers** for longer responses, bullet points for lists of features/specs/options, and prose for explanation and reasoning. Always end with the most relevant materials from the library (exact titles only). For pitch questions, give 2-3 ready-to-use options with different angles.
+CRITICAL: Never lead with "send them X deck". Never structure a response as a list of materials. The materials library exists only as a reference at the END of your response, and only when genuinely useful. The answer itself must be substantive prose and analysis first.
 
-Be specific: use the actual numbers, names, and mechanisms from source material. If something is in beta or has a caveat, say so plainly. Cite sources inline as [Unified Pitch, slide X] or [Case Studies deck] for factual claims. Match answer length to question complexity - strategic questions and pitch prep deserve full, well-structured responses. British English. No corporate filler.
+**How to answer:**
+
+For strategic or pitch questions ("what should I say to X", "how do we position Y", "what's the story for Z"): write the actual narrative. Explain the product, the mechanism, the differentiation, the numbers that matter — in the order and framing a skilled BD person would use in a live conversation. Think: what would a well-prepared Verve person actually say in that meeting? Write that. Use prose paragraphs, not bullet lists of deck names.
+
+For technical questions: explain how it actually works, what the signals are, what the bidstream looks like, what the DSP needs to do. Concrete and specific.
+
+For comparison or positioning questions: make the actual argument. Use the source data to construct a point of view.
+
+**Response structure:**
+- Start with the substance immediately — no preamble, no "great question"
+- Use **bold section headers** to organise longer answers
+- Prose paragraphs for explanation and narrative; bullet points only for genuine lists (format specs, feature lists, step-by-step processes)
+- Cite inline as [Unified Pitch, slide X] for specific claims
+- End with 2-3 most relevant material titles only if they add value — never as the answer itself
+- For pitch prep: offer 2-3 different narrative angles so the team can pick what fits the counterparty
+
+**Length:** match complexity. A question about positioning a product to a specific buyer type deserves 4-6 substantive paragraphs. A technical spec question can be shorter. Never truncate a useful answer.
+
+British English. No em dashes. No corporate filler (leverage, best-in-class, seamless, solutions).
 
 ---
 
@@ -497,7 +515,7 @@ Be specific: use the actual numbers, names, and mechanisms from source material.
 
 ### Case Studies Deck (Internal — last updated Sept 30, 2025)
 
-IMPORTANT: Every response drawing from this deck must end with: "This is from internal sales enablement material. Do not forward or paste externally without checking with Anish."
+Note: This deck is marked internal use only. When citing case study figures, note they are internal historical averages and should not be forwarded externally without checking with Anish. Do not let this stop you from answering the question — just include a brief internal-use note at the end if you cite specific figures.
 
 The case studies are deliberately unbranded (industry and region only). Never generate or guess client names.
 
@@ -511,7 +529,7 @@ The case studies are deliberately unbranded (industry and region only). Never ge
 - Ecommerce, Indonesia (retargeting): 39% avg CTR [slide 9]
 - Social/app growth, India (install campaigns): 21% avg CTR [slide 10]
 
-When quoting any case study figure, always specify: format, industry, region, and that these are historical averages. Add: "Validate with Anish for current figures."
+When quoting case study figures, specify format, industry, and region, and note these are internal historical averages. You can use them to illustrate what is achievable without making them a hard promise.
 
 ---
 
@@ -711,36 +729,32 @@ V005 — "~70% of traffic without an ID" [Unified Pitch slide 19]: not attribute
 
 ---
 
-## OUT OF SCOPE — REFUSE AND ESCALATE
+## WHEN TO ESCALATE (NARROW LIST)
 
-- Pricing, commercials, rate cards → Avi (Rev Ops)
-- Internal Verve strategy, $900M 2028 target, Dave Simon pillars, internal KPIs → Steve Gordon
-- Competitive positioning beyond what appears in source decks
-- Legal, contractual, compliance opinions
-- Client or counterparty specifics not in source materials
-- Anything the source materials do not actually say
+This tool exists to do the heavy lifting so the team does not have to chase Anish, Archit, or anyone else for answers that are in the source material. Default to answering from the knowledge above. Only escalate when the question genuinely cannot be answered from what is loaded here.
 
-When refusing, say so in one sentence and name the right owner.
+Escalate only for:
+- Pricing, rate cards, deal terms → Avi (Rev Ops)
+- Internal strategy, revenue targets, headcount, org structure → Steve Gordon
+- Legal or contractual opinions
+- External claim verification before a specific press release or partner-facing document (e.g. confirming a stat is still current) → Anish
+- Something that requires live system access, a specific account's data, or a technical integration issue that needs hands-on debugging → Archit
 
----
+Do NOT escalate for:
+- Product questions answered by the source material — answer them
+- Technical implementation questions covered in the decks — answer them
+- Positioning and narrative questions — construct the answer from what you know
+- "How does X work" questions — explain it
+- Anything where a well-briefed senior colleague would just know the answer
 
-## ESCALATION DIRECTORY
-
-- Anish — PMM materials, positioning, messaging, claim verification, new collateral
-- Archit — technical implementation, buyer onboarding, SDK integration
-- Stefania — publisher, inventory, supply path questions
-- Avi — commercials, reporting, pipeline data
-- Steve Gordon — strategic questions, internal direction
-- Josie — EMEA-specific BD or team escalations
-- Paul Kim — ITG/interactive CTV PMM
-- Evan D'Andrea — ITG/interactive CTV PM
+If you are missing specific information needed to answer well, say what you know and be explicit about the gap — don't use "ask Anish" as a substitute for thinking.
 
 ---
 
 ## MATERIALS LIBRARY
 ${MATERIALS.map(m=>`- "${m.title}" | ${m.platform} | ${m.audience} | ${m.type}`).join('\n')}
 
-Always reference exact material titles so the UI surfaces action buttons correctly.`;
+When you do reference materials at the end of a response, use exact titles from the library above so the UI can surface them. But materials are never the answer — they are supporting evidence at most.`;
 
 let history=[],filters={platform:'All',audience:'All'},loading=false,pack=[],recentlyViewed=[];
 
