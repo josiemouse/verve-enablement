@@ -48,6 +48,7 @@
   .pack-count{background:var(--accent);color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
   .tab-bar{display:flex;gap:0;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:6px;padding:3px;}
   .tab{padding:6px 18px;font-size:11px;font-weight:600;font-family:var(--font);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);border-radius:4px;transition:all .15s;letter-spacing:.1em;text-transform:uppercase;}
+  #homeTab{padding:6px 12px;font-size:15px;letter-spacing:0;border-right:1px solid rgba(255,255,255,.1);margin-right:2px;}
   .tab.active{background:var(--accent);color:#fff;letter-spacing:.1em;}
   .tab:hover:not(.active){color:var(--text);}
   .count-badge{font-size:11px;background:var(--dim);color:var(--muted);padding:1px 6px;border-radius:8px;margin-left:5px;font-weight:700;}
@@ -231,7 +232,8 @@
       📦 Build a Pack <span class="pack-count" id="packCount" style="display:none">0</span>
     </button>
     <div class="tab-bar">
-      <button class="tab active" onclick="switchTab('chat',this)">Ask AI</button>
+      <button class="tab active" id="homeTab" onclick="goHome(this)" title="Home">⌂</button>
+      <button class="tab" onclick="switchTab('chat',this)">Ask AI</button>
       <button class="tab" onclick="switchTab('library',this)">Library <span class="count-badge" id="libCount">57</span></button>
     </div>
     <button class="info-btn" onclick="openModal()" title="How to use"><i>i</i></button>
@@ -776,6 +778,28 @@ window.addEventListener('load',function(){
   document.getElementById('apiKeyInput').addEventListener('keydown',function(e){if(e.key==='Enter')saveKey();});
   renderLibrary();
 });
+
+function goHome(btn){
+  // Reset chat to empty state, switch to chat tab
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML = `<div class="empty-state" id="emptyState">
+    <div class="empty-eyebrow">Verve · EMEA Demand Intelligence</div>
+    <div class="empty-headline">Walk into every pitch fully briefed.</div>
+    <div class="empty-sub">Product knowledge, pitch narratives, and live market intelligence — grounded in Verve source material and current industry data.</div>
+    <div class="suggestions">
+      <button class="suggestion" onclick="ask('How do I pitch Performance+ to a gaming DSP who is sceptical about signal quality on iOS?')"><span class="sug-icon">→</span>How do I pitch Performance+ to a gaming DSP sceptical about iOS signal quality?</button>
+      <button class="suggestion" onclick="ask('What is the strongest argument for Brand+ CTV over a direct publisher buy?')"><span class="sug-icon">→</span>What is the strongest argument for Brand+ CTV over a direct publisher buy?</button>
+      <button class="suggestion" onclick="ask('How does Helix actually work and why is it better than standard inventory-curated deals?')"><span class="sug-icon">→</span>How does Helix work and why is it better than inventory-curated deals?</button>
+      <button class="suggestion" onclick="ask('What are the latest industry trends in CTV advertising I should know about for a pitch?')"><span class="sug-icon">→</span>What are the latest industry trends in CTV I should know for a pitch?</button>
+      <button class="suggestion" onclick="ask('How does ATOM solve the iOS identity problem and what proof do we have it works?')"><span class="sug-icon">→</span>How does ATOM solve the iOS identity problem and what proof do we have?</button>
+    </div>
+  </div>`;
+  history = [];
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab,.pack-btn').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-chat').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>{if(t.id==='homeTab')t.classList.add('active');});
+}
 
 function switchTab(tab,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
