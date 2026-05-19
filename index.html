@@ -36,11 +36,11 @@
   .key-btn:hover{background:#e63d28;}
   .key-note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;}
 
-  header{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:80px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;background:rgba(0,0,0,.2);backdrop-filter:blur(12px);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:88px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;background:rgba(0,0,0,.25);backdrop-filter:blur(12px);}
   .logo{display:flex;align-items:center;gap:12px;}
-  .logo img{height:44px;width:auto;mix-blend-mode:screen;filter:brightness(1.2);}
-  .logo-divider{width:1px;height:32px;background:rgba(255,255,255,.2);margin:0 8px;}
-  .logo-label{font-size:13px;font-weight:400;color:rgba(255,255,255,.9);letter-spacing:.22em;text-transform:uppercase;font-family:var(--serif);font-style:italic;}
+  .logo img{height:52px;width:auto;mix-blend-mode:screen;filter:brightness(1.2);}
+  .logo-divider{width:1px;height:40px;background:rgba(255,255,255,.2);margin:0 16px;}
+  .logo-label{font-size:17px;font-weight:400;color:rgba(255,255,255,.95);letter-spacing:.28em;text-transform:uppercase;font-family:var(--serif);font-style:italic;}
   .header-right{display:flex;align-items:center;gap:10px;}
   .pack-btn{display:flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:6px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;font-family:var(--font);transition:all .15s;letter-spacing:.08em;text-transform:uppercase;}
   .pack-btn:hover{color:var(--text);border-color:var(--accent);background:var(--aglow);}
@@ -242,15 +242,15 @@
 <div class="panel active" id="panel-chat">
   <div class="chat-messages" id="chatMessages">
     <div class="empty-state" id="emptyState">
-      <div class="empty-eyebrow">Sales Enablement Assistant</div>
-      <div class="empty-headline">Find the right material, fast.</div>
-      <div class="empty-sub">Ask about decks, one-pagers, playbooks and more across Performance+, Brand+ and both marketplaces.</div>
+      <div class="empty-eyebrow">Verve · EMEA Demand Intelligence</div>
+      <div class="empty-headline">Walk into every pitch fully briefed.</div>
+      <div class="empty-sub">Product knowledge, pitch narratives, and live market intelligence — grounded in Verve source material and current industry data.</div>
       <div class="suggestions">
-        <button class="suggestion" onclick="ask('What should I send a new DSP partner interested in Performance+?')"><span class="sug-icon">→</span>What should I send a new DSP partner interested in Performance+?</button>
-        <button class="suggestion" onclick="ask('Which materials cover CTV for demand buyers?')"><span class="sug-icon">→</span>Which materials cover CTV for demand buyers?</button>
-        <button class="suggestion" onclick="ask('Best deck to onboard a Brand+ supply partner to web?')"><span class="sug-icon">→</span>Best deck to onboard a Brand+ supply partner to web?</button>
-        <button class="suggestion" onclick="ask('Where do I find case studies I can share externally?')"><span class="sug-icon">→</span>Where do I find case studies I can share externally?</button>
-        <button class="suggestion" onclick="ask('What one-pagers do we have for Performance+ demand partners?')"><span class="sug-icon">→</span>What one-pagers do we have for Performance+ demand partners?</button>
+        <button class="suggestion" onclick="ask('How do I pitch Performance+ to a gaming DSP who is sceptical about signal quality on iOS?')"><span class="sug-icon">→</span>How do I pitch Performance+ to a gaming DSP sceptical about iOS signal quality?</button>
+        <button class="suggestion" onclick="ask('What is the strongest argument for Brand+ CTV over a direct publisher buy?')"><span class="sug-icon">→</span>What is the strongest argument for Brand+ CTV over a direct publisher buy?</button>
+        <button class="suggestion" onclick="ask('How does Helix actually work and why is it better than standard inventory-curated deals?')"><span class="sug-icon">→</span>How does Helix work and why is it better than inventory-curated deals?</button>
+        <button class="suggestion" onclick="ask('What are the latest industry trends in CTV advertising I should know about for a pitch?')"><span class="sug-icon">→</span>What are the latest industry trends in CTV I should know for a pitch?</button>
+        <button class="suggestion" onclick="ask('How does ATOM solve the iOS identity problem and what proof do we have it works?')"><span class="sug-icon">→</span>How does ATOM solve the iOS identity problem and what proof do we have?</button>
       </div>
     </div>
   </div>
@@ -452,6 +452,18 @@ Lead with substance immediately. Use **bold headers** for longer answers. Prose 
 For pitch prep: give 2-3 different narrative angles the team can choose between depending on the counterparty.
 
 British English. No em dashes. No filler.
+
+**Web search — use it:**
+
+You have access to web search. Use it when the question touches on:
+- Industry trends, market context, or the broader programmatic landscape
+- Recent news about DSPs, SSPs, identity, CTV, or mobile advertising
+- Competitor moves or market positioning
+- Anything where a well-briefed BD person would want current market intelligence to strengthen their pitch
+
+Trusted sources to prioritise: Jounce Media (jounce.media), AdExchanger, Digiday, IAB research, eMarketer, The Trade Desk insights, Pixalate reports. Ignore SEO farms and press release aggregators.
+
+When you use web search: weave the findings naturally into your answer. Do not present search results as a separate section. Cite the source inline (e.g. "according to Jounce's latest supply chain report..."). Only use information from the past 18 months unless the question is specifically historical.
 
 ## SOURCE MATERIAL
 
@@ -807,11 +819,28 @@ async function sendMessage(){
         'anthropic-version':'2023-06-01',
         'anthropic-dangerous-direct-browser-access':'true'
       },
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:SYSTEM_PROMPT,messages:history})
+      body:JSON.stringify({
+        model:'claude-sonnet-4-5',
+        max_tokens:3000,
+        system:SYSTEM_PROMPT,
+        messages:history,
+        tools:[{
+          type:'web_search_20250305',
+          name:'web_search',
+          max_uses:3
+        }]
+      })
     });
     const data=await res.json();
     if(data.error){throw new Error(data.error.message||'API error');}
-    const reply=data.content?.[0]?.text||'Something went wrong — please try again.';
+    // Handle tool use and text blocks
+    let reply = '';
+    if(data.content){
+      for(const block of data.content){
+        if(block.type==='text') reply += block.text;
+      }
+    }
+    if(!reply) reply = 'Something went wrong — please try again.';
     history.push({role:'assistant',content:reply});
     t.remove();
     const mentioned=MATERIALS.filter(m=>reply.includes(m.title));
