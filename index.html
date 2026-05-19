@@ -1,70 +1,663 @@
-￼
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verve · Sales Enablement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#060723; --surface:#0d0f2b; --surface2:#12153a;
+    --border:#1e2248; --border-hi:#2e3468;
+    --text:#f0f0f8; --muted:#6b6f9a; --dim:#1a1d42;
+    --accent:#ff4f3b; --accent2:#ff8c5a; --aglow:rgba(255,79,59,0.12);
+    --blue:#4d9fff; --green:#34d399; --purple:#a78bfa;
+    --font:'Nunito Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);font-size:15px;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
-SALES ENABLEMENT
-Enter your API key to get started
-This tool uses your personal Anthropic API key for the Ask AI feature. Get yours at console.anthropic.com — it takes 30 seconds. Your key is saved in your browser and never shared.
-Save and continue
-You only need to do this once per device.
-￼
+  /* API KEY SCREEN */
+  #apiKeyScreen{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;align-items:center;justify-content:center;}
+  .key-box{background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;padding:36px 40px;width:480px;max-width:90vw;}
+  .key-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+  .key-logo img{height:28px;width:auto;}
+  .key-logo-divider{width:1px;height:18px;background:var(--border-hi);}
+  .key-logo-label{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;}
+  .key-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:8px;}
+  .key-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+  .key-sub a{color:var(--accent);text-decoration:none;}
+  .key-sub a:hover{text-decoration:underline;}
+  .key-input{width:100%;background:var(--bg);border:1px solid var(--border-hi);border-radius:8px;padding:11px 14px;font-size:14px;font-family:var(--font);color:var(--text);outline:none;margin-bottom:12px;transition:border-color .15s;}
+  .key-input:focus{border-color:rgba(255,79,59,.5);}
+  .key-btn{width:100%;padding:12px;background:var(--accent);border:none;border-radius:8px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:var(--font);transition:background .15s;}
+  .key-btn:hover{background:#e63d28;}
+  .key-note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;}
 
-SALES ENABLEMENT
-📦 Build a Pack
-Ask AI
-Library 57
-i
-SALES ENABLEMENT ASSISTANT
-Find the right material, fast.
-Ask about decks, one-pagers, playbooks and more across Performance+, Brand+ and both marketplaces.
-→What should I send a new DSP partner interested in Performance+? →Which materials cover CTV for demand buyers? →Best deck to onboard a Brand+ supply partner to web? →Where do I find case studies I can share externally? →What one-pagers do we have for Performance+ demand partners?
-↑
-How to use Sales Enablement
-×
-💬
-Ask AI
-Ask natural language questions to get material recommendations for any partner situation, use case or format need.
-Ask by partner type — "what should I send a retargeting DSP?" Ask by format or product — "what covers CTV for brand buyers?" When materials are recommended, click
-↗ Open
-to open directly, or
-+ Pack
-to save them The conversation keeps context — you can follow up or refine
+  header{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:62px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .logo{display:flex;align-items:center;gap:12px;}
+  .logo img{height:28px;width:auto;}
+  .logo-divider{width:1px;height:18px;background:var(--border-hi);}
+  .logo-label{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;}
+  .header-right{display:flex;align-items:center;gap:10px;}
+  .pack-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--dim);border:1px solid var(--border-hi);border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font);transition:all .15s;}
+  .pack-btn:hover{color:var(--text);border-color:var(--accent);background:var(--aglow);}
+  .pack-btn.has-items{color:var(--accent);border-color:var(--accent);background:var(--aglow);}
+  .pack-count{background:var(--accent);color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .tab-bar{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:3px;}
+  .tab{padding:6px 16px;font-size:14px;font-weight:600;font-family:var(--font);background:none;border:none;cursor:pointer;color:var(--muted);border-radius:5px;transition:all .15s;}
+  .tab.active{background:var(--accent);color:#fff;}
+  .tab:hover:not(.active){color:var(--text);}
+  .count-badge{font-size:11px;background:var(--dim);color:var(--muted);padding:1px 6px;border-radius:8px;margin-left:5px;font-weight:700;}
+  .tab.active .count-badge{background:rgba(255,255,255,.2);color:rgba(255,255,255,.8);}
+  .info-btn{width:26px;height:26px;border-radius:50%;border:1px solid var(--border-hi);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--muted);font-family:var(--font);transition:all .15s;flex-shrink:0;font-style:italic;}
+  .info-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--aglow);}
+  .panel{display:none;flex:1;flex-direction:column;overflow:hidden;}
+  .panel.active{display:flex;}
+  .chat-messages{flex:1;overflow-y:auto;padding:28px 32px;scroll-behavior:smooth;}
+  .chat-messages::-webkit-scrollbar{width:3px;}
+  .chat-messages::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .empty-state{animation:fadeUp .35s ease both;max-width:600px;}
+  .empty-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .empty-headline{font-size:30px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:8px;}
+  .empty-sub{font-size:15px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+  .suggestions{display:flex;flex-direction:column;gap:7px;}
+  .suggestion{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-size:14px;color:#8a8eb8;text-align:left;transition:all .15s;font-family:var(--font);font-weight:500;}
+  .suggestion:hover{border-color:rgba(255,79,59,.35);color:var(--text);background:var(--surface2);}
+  .sug-icon{width:26px;height:26px;border-radius:6px;background:var(--aglow);border:1px solid rgba(255,79,59,.2);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:var(--accent);}
+  .message{display:flex;flex-direction:column;margin-bottom:16px;animation:fadeUp .2s ease both;}
+  .message.user{align-items:flex-end;}
+  .message.assistant{align-items:flex-start;}
+  .bubble{max-width:78%;padding:13px 17px;font-size:15px;line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+  .message.user .bubble{background:var(--aglow);border:1px solid rgba(255,79,59,.2);border-radius:14px 14px 4px 14px;color:#ffd0cc;}
+  .message.assistant .bubble{background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 14px 4px;color:#c8cce8;}
+  .bubble-actions{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+  .open-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;background:var(--dim);border:1px solid var(--border-hi);border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;text-decoration:none;font-family:var(--font);transition:all .15s;}
+  .open-btn:hover{color:#fff;border-color:var(--accent);background:var(--aglow);}
+  .add-pack-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;background:var(--dim);border:1px solid var(--border-hi);border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font);transition:all .15s;}
+  .add-pack-btn:hover{color:var(--green);border-color:var(--green);background:rgba(52,211,153,.1);}
+  .typing{display:flex;margin-bottom:16px;}
+  .typing-bubble{background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:14px 18px;display:flex;gap:5px;align-items:center;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:bounce 1.2s ease-in-out infinite;}
+  .dot:nth-child(2){animation-delay:.15s;}.dot:nth-child(3){animation-delay:.3s;}
+  @keyframes bounce{0%,100%{transform:translateY(0);opacity:.35;}50%{transform:translateY(-4px);opacity:1;}}
+  .input-area{padding:12px 32px 20px;border-top:1px solid var(--border);flex-shrink:0;}
+  .input-wrap{display:flex;align-items:flex-end;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px;transition:border-color .15s;}
+  .input-wrap:focus-within{border-color:rgba(255,79,59,.4);}
+  #chatInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:15px;font-family:var(--font);line-height:1.5;resize:none;max-height:100px;overflow-y:auto;}
+  #chatInput::placeholder{color:var(--muted);}
+  #sendBtn{width:36px;height:36px;border-radius:8px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;transition:all .15s;flex-shrink:0;background:var(--dim);color:var(--muted);}
+  #sendBtn.ready{background:var(--accent);color:#fff;}
+  #sendBtn:disabled{cursor:default;}
+  .library-panel{flex:1;overflow-y:auto;padding:24px 32px;}
+  .library-panel::-webkit-scrollbar{width:3px;}
+  .library-panel::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px;}
+  .lib-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .search-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;transition:border-color .15s;max-width:360px;}
+  .search-wrap:focus-within{border-color:rgba(255,79,59,.4);}
+  .search-icon{font-size:13px;color:var(--muted);flex-shrink:0;}
+  #searchInput{background:none;border:none;outline:none;color:var(--text);font-size:14px;font-family:var(--font);flex:1;min-width:0;}
+  #searchInput::placeholder{color:var(--muted);}
+  .filters{display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;align-items:center;}
+  .filter-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .filter-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-right:3px;}
+  .filter-btn{padding:5px 12px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);font-family:var(--font);transition:all .15s;background:var(--surface);color:var(--muted);}
+  .filter-btn:hover{color:var(--text);border-color:var(--border-hi);}
+  .fp{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .fad{background:rgba(255,79,59,.15);color:#ff8070;border-color:rgba(255,79,59,.3);}
+  .fas{background:rgba(77,159,255,.15);color:#7dbfff;border-color:rgba(77,159,255,.3);}
+  .faa{background:var(--dim);color:var(--text);border-color:var(--border-hi);}
+  .results-count{font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;}
+  .material-list{display:flex;flex-direction:column;gap:5px;}
+  .material-card{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;text-decoration:none;transition:all .15s;gap:14px;}
+  .material-card:hover{border-color:rgba(255,79,59,.3);background:var(--surface2);}
+  .material-card.in-pack{border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.04);}
+  .material-info{flex:1;min-width:0;}
+  .material-title{font-size:14px;font-weight:600;color:#c8cce8;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .material-card:hover .material-title{color:#fff;}
+  .material-meta{display:flex;align-items:center;gap:6px;}
+  .meta-text{font-size:12px;color:var(--muted);}
+  .meta-dot{font-size:10px;color:var(--dim);}
+  .material-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .audience-tag{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+  .td{background:rgba(255,79,59,.12);color:#ff7060;}
+  .ts{background:rgba(77,159,255,.12);color:#6abaff;}
+  .card-add-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border-hi);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .15s;flex-shrink:0;}
+  .card-add-btn:hover{border-color:var(--green);color:var(--green);background:rgba(52,211,153,.1);}
+  .card-add-btn.added{border-color:var(--green);color:var(--green);background:rgba(52,211,153,.1);}
+  .copy-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border-hi);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);transition:all .15s;flex-shrink:0;}
+  .copy-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(77,159,255,.1);}
+  .ext-icon{font-size:12px;color:var(--border-hi);transition:color .15s;text-decoration:none;}
+  .material-card:hover .ext-icon{color:var(--muted);}
+  .recent-section{margin-bottom:22px;}
+  .section-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px;}
+  .recent-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .recent-chip{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:12px;color:#8a8eb8;cursor:pointer;text-decoration:none;transition:all .15s;font-family:var(--font);}
+  .recent-chip:hover{border-color:rgba(255,79,59,.3);color:var(--text);}
+  .pack-panel{flex:1;overflow-y:auto;padding:24px 32px;}
+  .pack-panel::-webkit-scrollbar{width:3px;}
+  .pack-panel::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px;}
+  .pack-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+  .pack-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+  .pack-actions{display:flex;gap:8px;}
+  .action-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font);transition:all .15s;}
+  .action-btn:hover{color:var(--text);border-color:var(--border-hi);}
+  .action-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .action-btn.primary:hover{background:#e63d28;}
+  .action-btn.email-btn{border-color:var(--blue);color:var(--blue);}
+  .action-btn.email-btn:hover{background:rgba(77,159,255,.1);}
+  .pack-empty{text-align:center;padding:60px 20px;color:var(--muted);}
+  .pack-empty-icon{font-size:40px;margin-bottom:12px;opacity:.4;}
+  .pack-empty-text{font-size:15px;}
+  .pack-item{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:5px;gap:14px;}
+  .pack-item-title{font-size:14px;font-weight:600;color:#c8cce8;}
+  .pack-item-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+  .pack-item-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .remove-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border-hi);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .15s;}
+  .remove-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--aglow);}
+  .pack-preview{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;}
+  .pack-preview-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px;}
+  .pack-preview-body{font-size:14px;color:#c8cce8;line-height:1.75;white-space:pre-wrap;font-family:var(--font);}
+  .copy-all-btn{margin-top:12px;display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--dim);border:1px solid var(--border-hi);border-radius:7px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font);transition:all .15s;}
+  .copy-all-btn:hover{color:var(--blue);border-color:var(--blue);}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e2248;border:1px solid var(--border-hi);border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;color:var(--text);opacity:0;transition:all .25s;pointer-events:none;z-index:999;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal{background:var(--surface);border:1px solid var(--border-hi);border-radius:16px;width:560px;max-width:90vw;max-height:80vh;overflow-y:auto;padding:28px 32px;transform:translateY(16px);transition:transform .2s;}
+  .modal-overlay.open .modal{transform:translateY(0);}
+  .modal::-webkit-scrollbar{width:3px;}
+  .modal::-webkit-scrollbar-thumb{background:var(--dim);}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+  .modal-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+  .modal-close{width:30px;height:30px;border-radius:8px;border:1px solid var(--border-hi);background:none;cursor:pointer;color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+  .modal-close:hover{border-color:var(--accent);color:var(--accent);}
+  .guide-section{margin-bottom:22px;}
+  .guide-section:last-child{margin-bottom:0;}
+  .guide-heading{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .guide-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .guide-icon.chat{background:var(--aglow);border:1px solid rgba(255,79,59,.2);}
+  .guide-icon.lib{background:rgba(77,159,255,.1);border:1px solid rgba(77,159,255,.2);}
+  .guide-icon.pack{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);}
+  .guide-icon.copy{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);}
+  .guide-icon.recent{background:rgba(255,140,90,.1);border:1px solid rgba(255,140,90,.2);}
+  .guide-label{font-size:14px;font-weight:700;color:#fff;}
+  .guide-desc{font-size:14px;color:#9a9ec8;line-height:1.65;padding-left:42px;}
+  .guide-tips{margin-top:8px;padding-left:42px;display:flex;flex-direction:column;gap:5px;}
+  .guide-tip{font-size:13px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;}
+  .guide-tip::before{content:'→';color:var(--accent);flex-shrink:0;margin-top:1px;}
+  .guide-divider{height:1px;background:var(--border);margin:18px 0;}
+  footer{padding:8px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .footer-text{font-size:12px;color:var(--muted);}
+  .footer-dot{color:var(--border-hi);margin:0 5px;}
+  .change-key-btn{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;}
+  .change-key-btn:hover{color:var(--text);}
+</style>
+</head>
+<body>
 
-📚
-Library
-Browse and search the full catalogue. Filter by platform and audience to narrow down quickly.
-Use the search bar to filter by keyword across titles, platforms and types Filter by
-Platform
-and
-Audience
-to narrow down Click
-↗
-to open,
-🔗
-to copy the link,
-+
-to add to your pack
+<!-- API KEY SCREEN -->
+<div id="apiKeyScreen">
+  <div class="key-box">
+    <div class="key-logo">
+      <img src="https://verve.com/wp-content/uploads/2023/03/verve-logo-white.svg" alt="Verve" onerror="this.style.display='none'">
+      <div class="key-logo-divider"></div>
+      <span class="key-logo-label">Sales Enablement</span>
+    </div>
+    <div class="key-title">Enter your API key to get started</div>
+    <div class="key-sub">This tool uses your personal Anthropic API key for the Ask AI feature. Get yours at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> — it takes 30 seconds. Your key is saved in your browser and never shared.</div>
+    <input type="password" class="key-input" id="apiKeyInput" placeholder="sk-ant-..." />
+    <button class="key-btn" onclick="saveKey()">Save and continue</button>
+    <div class="key-note">You only need to do this once per device.</div>
+  </div>
+</div>
 
-🕐
-Recently Viewed
-Materials you open are tracked in a strip at the top of the Library — useful for revisiting things before or during a call.
-Tracks up to 6 materials per session Resets when you close the browser tab
+<header>
+  <div class="logo">
+    <img src="https://verve.com/wp-content/uploads/2023/03/verve-logo-white.svg" alt="Verve" onerror="this.style.display='none'">
+    <div class="logo-divider"></div>
+    <span class="logo-label">Sales Enablement</span>
+  </div>
+  <div class="header-right">
+    <button class="pack-btn" id="packBtn" onclick="switchTab('pack',this)">
+      📦 Build a Pack <span class="pack-count" id="packCount" style="display:none">0</span>
+    </button>
+    <div class="tab-bar">
+      <button class="tab active" onclick="switchTab('chat',this)">Ask AI</button>
+      <button class="tab" onclick="switchTab('library',this)">Library <span class="count-badge" id="libCount">57</span></button>
+    </div>
+    <button class="info-btn" onclick="openModal()" title="How to use"><i>i</i></button>
+  </div>
+</header>
 
-📦
-Build a Pack
-Curate a set of materials for a specific partner or meeting, then send them in one go.
-Add via the
-+
-button in Library or
-+ Pack
-from AI recommendations The Pack button turns orange when you have items
-Copy all links
-copies a plain list;
-Send via email
-opens your mail client pre-written
+<!-- CHAT -->
+<div class="panel active" id="panel-chat">
+  <div class="chat-messages" id="chatMessages">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-eyebrow">Sales Enablement Assistant</div>
+      <div class="empty-headline">Find the right material, fast.</div>
+      <div class="empty-sub">Ask about decks, one-pagers, playbooks and more across Performance+, Brand+ and both marketplaces.</div>
+      <div class="suggestions">
+        <button class="suggestion" onclick="ask('What should I send a new DSP partner interested in Performance+?')"><span class="sug-icon">→</span>What should I send a new DSP partner interested in Performance+?</button>
+        <button class="suggestion" onclick="ask('Which materials cover CTV for demand buyers?')"><span class="sug-icon">→</span>Which materials cover CTV for demand buyers?</button>
+        <button class="suggestion" onclick="ask('Best deck to onboard a Brand+ supply partner to web?')"><span class="sug-icon">→</span>Best deck to onboard a Brand+ supply partner to web?</button>
+        <button class="suggestion" onclick="ask('Where do I find case studies I can share externally?')"><span class="sug-icon">→</span>Where do I find case studies I can share externally?</button>
+        <button class="suggestion" onclick="ask('What one-pagers do we have for Performance+ demand partners?')"><span class="sug-icon">→</span>What one-pagers do we have for Performance+ demand partners?</button>
+      </div>
+    </div>
+  </div>
+  <div class="input-area">
+    <div class="input-wrap">
+      <textarea id="chatInput" placeholder="Ask about materials, formats, platforms, partner use cases..." rows="1"></textarea>
+      <button id="sendBtn" onclick="sendMessage()" disabled>↑</button>
+    </div>
+  </div>
+</div>
 
-🔗
-Copy Link
-The 🔗 button on every card copies the URL straight to clipboard — no need to open the doc first.
-A confirmation toast appears at the bottom of the screen when copied
+<!-- LIBRARY -->
+<div class="panel" id="panel-library">
+  <div class="library-panel">
+    <div class="lib-top">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search materials..." oninput="renderLibrary()">
+      </div>
+    </div>
+    <div id="recentSection" class="recent-section" style="display:none">
+      <div class="section-label">Recently viewed</div>
+      <div class="recent-chips" id="recentChips"></div>
+    </div>
+    <div class="filters">
+      <div class="filter-group">
+        <span class="filter-label">Platform</span>
+        <button class="filter-btn fp"  data-f="platform" data-v="All"                      onclick="setFilter('platform','All',this)">All</button>
+        <button class="filter-btn"     data-f="platform" data-v="Marketplaces (Both)"      onclick="setFilter('platform','Marketplaces (Both)',this)">Both</button>
+        <button class="filter-btn"     data-f="platform" data-v="Performance+ Marketplace" onclick="setFilter('platform','Performance+ Marketplace',this)">Performance+</button>
+        <button class="filter-btn"     data-f="platform" data-v="Brand+ Marketplace"       onclick="setFilter('platform','Brand+ Marketplace',this)">Brand+</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Audience</span>
+        <button class="filter-btn faa" data-f="audience" data-v="All"    onclick="setFilter('audience','All',this)">All</button>
+        <button class="filter-btn"     data-f="audience" data-v="Demand" onclick="setFilter('audience','Demand',this)">Demand</button>
+        <button class="filter-btn"     data-f="audience" data-v="Supply" onclick="setFilter('audience','Supply',this)">Supply</button>
+      </div>
+    </div>
+    <div class="results-count" id="resultsCount"></div>
+    <div class="material-list" id="materialList"></div>
+  </div>
+</div>
 
-Verve Group·Internal use only
-·Change API key
+<!-- PACK -->
+<div class="panel" id="panel-pack">
+  <div class="pack-panel">
+    <div class="pack-header">
+      <div class="pack-title">📦 Your Pack</div>
+      <div class="pack-actions">
+        <button class="action-btn" onclick="clearPack()">Clear</button>
+        <button class="action-btn email-btn" onclick="openEmail()">✉ Send via email</button>
+        <button class="action-btn primary" onclick="copyPack()">Copy all links</button>
+      </div>
+    </div>
+    <div id="packItems"></div>
+    <div id="packPreview" class="pack-preview" style="display:none">
+      <div class="pack-preview-label">Email preview</div>
+      <div class="pack-preview-body" id="packPreviewBody"></div>
+      <button class="copy-all-btn" onclick="copyPreview()">📋 Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- INFO MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">How to use Sales Enablement</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="guide-section">
+      <div class="guide-heading"><div class="guide-icon chat">💬</div><div class="guide-label">Ask AI</div></div>
+      <div class="guide-desc">Ask natural language questions to get material recommendations for any partner situation, use case or format need.</div>
+      <div class="guide-tips">
+        <div class="guide-tip">Ask by partner type — "what should I send a retargeting DSP?"</div>
+        <div class="guide-tip">Ask by format or product — "what covers CTV for brand buyers?"</div>
+        <div class="guide-tip">When materials are recommended, click <strong style="color:#c8cce8">↗ Open</strong> to open directly, or <strong style="color:#c8cce8">+ Pack</strong> to save them</div>
+        <div class="guide-tip">The conversation keeps context — you can follow up or refine</div>
+      </div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-heading"><div class="guide-icon lib">📚</div><div class="guide-label">Library</div></div>
+      <div class="guide-desc">Browse and search the full catalogue. Filter by platform and audience to narrow down quickly.</div>
+      <div class="guide-tips">
+        <div class="guide-tip">Use the search bar to filter by keyword across titles, platforms and types</div>
+        <div class="guide-tip">Filter by <strong style="color:#c8cce8">Platform</strong> and <strong style="color:#c8cce8">Audience</strong> to narrow down</div>
+        <div class="guide-tip">Click <strong style="color:#c8cce8">↗</strong> to open, <strong style="color:#c8cce8">🔗</strong> to copy the link, <strong style="color:#c8cce8">+</strong> to add to your pack</div>
+      </div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-heading"><div class="guide-icon recent">🕐</div><div class="guide-label">Recently Viewed</div></div>
+      <div class="guide-desc">Materials you open are tracked in a strip at the top of the Library — useful for revisiting things before or during a call.</div>
+      <div class="guide-tips">
+        <div class="guide-tip">Tracks up to 6 materials per session</div>
+        <div class="guide-tip">Resets when you close the browser tab</div>
+      </div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-heading"><div class="guide-icon pack">📦</div><div class="guide-label">Build a Pack</div></div>
+      <div class="guide-desc">Curate a set of materials for a specific partner or meeting, then send them in one go.</div>
+      <div class="guide-tips">
+        <div class="guide-tip">Add via the <strong style="color:#c8cce8">+</strong> button in Library or <strong style="color:#c8cce8">+ Pack</strong> from AI recommendations</div>
+        <div class="guide-tip">The Pack button turns orange when you have items</div>
+        <div class="guide-tip"><strong style="color:#c8cce8">Copy all links</strong> copies a plain list; <strong style="color:#c8cce8">Send via email</strong> opens your mail client pre-written</div>
+      </div>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-section">
+      <div class="guide-heading"><div class="guide-icon copy">🔗</div><div class="guide-label">Copy Link</div></div>
+      <div class="guide-desc">The 🔗 button on every card copies the URL straight to clipboard — no need to open the doc first.</div>
+      <div class="guide-tips">
+        <div class="guide-tip">A confirmation toast appears at the bottom of the screen when copied</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <span class="footer-text">Verve Group<span class="footer-dot">·</span>Internal use only</span>
+  <span class="footer-text"><span id="footerCount"></span><span class="footer-dot">·</span><button class="change-key-btn" onclick="changeKey()">Change API key</button></span>
+</footer>
+
+<script>
+const MATERIALS=[
+  {title:"Unified Marketplace Pitch",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1TA_E6k0YrevK-mgoJboPTk6mB_IIyuyM8QBVAnICSaw/edit"},
+  {title:"Marketplace - Case Study Library",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/17zbz073yIj2G3njpr9bmYc-GB6sb6GG9Ss4D-8j_vhM/edit"},
+  {title:"Brands & Agencies Pitch",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1uoIiRchM7dFGeFliU4NtkrhEig6jw9cD_ioGkcLYlEI/edit"},
+  {title:"Ad Experiences Playbook",platform:"Marketplaces (Both)",type:"Playbook",audience:"Demand",url:"https://docs.google.com/presentation/d/1yiHL06k32A9dpQZNbp1R9frofuGghx7ITd4YMPcH810/edit"},
+  {title:"Whitelisted & Unbranded Case Studies",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/17zbz073yIj2G3njpr9bmYc-GB6sb6GG9Ss4D-8j_vhM/edit"},
+  {title:"Jio Ads",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1j_dbxxYs_SK3aiRk6ZgnVxu_s9SNOCIKnUdY-v7aBZg/edit"},
+  {title:"Kargo",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1rzzBH6vUoGv-QKR7d7-hG-OAwdCFwXX1jXLu5zoJlCY/edit"},
+  {title:"Amazon",platform:"Marketplaces (Both)",type:"Presentation",audience:"Supply",url:"https://docs.google.com/presentation/d/1U4IgzBK0p84759AsU7iFKyxla3aE2mOHXcLga74LoMc/edit"},
+  {title:"Product Training — Sept 2025",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1zyiNAshUOfdrre5SfB5PDqswYh-B601I9pegyfKVN-4/edit"},
+  {title:"Product Training — Oct 2025",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1zyiNAshUOfdrre5SfB5PDqswYh-B601I9pegyfKVN-4/edit"},
+  {title:"Product Training — Nov 2025",platform:"Marketplaces (Both)",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1e_EPU4PFr7YGdrlMIkN1VlzWq8Z74CYSfz2REKJDrUM/edit"},
+  {title:"Ad Specification Guide",platform:"Performance+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/16fLFcWRnXsW7sn6fEWAaFD7JFMZsZtqG2PTNcGPhPEc/edit"},
+  {title:"Marketplace Overview (Demand)",platform:"Performance+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://drive.google.com/file/d/152_EBCo_6DA15rUotvueymheaEtMEKUR/view"},
+  {title:"Marketplace Overview (Supply Deck)",platform:"Performance+ Marketplace",type:"Presentation",audience:"Supply",url:"https://docs.google.com/presentation/d/1mTMk3QnnqzQr1FuIk_CaCQP0EVIrABrB9Zefnv1AaWU/edit"},
+  {title:"Marketplace Overview (Supply One Sheet)",platform:"Performance+ Marketplace",type:"One Sheet",audience:"Supply",url:"https://drive.google.com/file/d/1sywtKXY_a77ojWsA1krcSoEH2559I4Fm/view"},
+  {title:"HyBid SDK 3.7.1 Overview",platform:"Performance+ Marketplace",type:"Presentation",audience:"Supply",url:"https://docs.google.com/presentation/d/1RYA3D_YqtdcINP7drKKsrewEsNVVBD1mF7MYg6f67Gc/edit"},
+  {title:"HyBid SDK 3.6.1 Overview",platform:"Performance+ Marketplace",type:"Presentation",audience:"Supply",url:"https://docs.google.com/presentation/d/1n3sJAcO1F_qD3Cgyfl8m2AGnMBDSjbZSDmEPuqxJGes/edit"},
+  {title:"Interstitials",platform:"Performance+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://docs.google.com/presentation/d/1WjY2m4chdlIGJc-_bccd5KcMy3miwfRB0bLAO-DV0cA/edit"},
+  {title:"Playables",platform:"Performance+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1_GDmyXxgVLUxH-B12ZER8DluYy-b9rpc5ZKG3y6O-eo/edit"},
+  {title:"Deeplink Feature",platform:"Performance+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/17DfrwAaX_bUJWh6hsF_GP8xJs7nCO_U0T34GEAlufrM/edit"},
+  {title:"Axes in Motion — Gaming Inventory",platform:"Performance+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://drive.google.com/file/d/1pVJb9Ldh6tdhGqPgJKNrGaXXcSSzbLw0/view"},
+  {title:"Truecaller Inventory",platform:"Performance+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://drive.google.com/file/d/1z3UpV08jkX_YRO6QMIwt3skLG0jGh4YI/view"},
+  {title:"Ad Specification Guide",platform:"Brand+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1bmoahI5n_B5_zddI8QB_8dNBJzpTUKjZHpxod6vhA8w/edit"},
+  {title:"Marketplace Overview (Supply Deck)",platform:"Brand+ Marketplace",type:"Presentation",audience:"Supply",url:"https://docs.google.com/presentation/d/1LKdlOMcEesOagz2mzHdNMiyUMTgYARwwumE-DaQYtQA/edit"},
+  {title:"Marketplace Overview (Demand One Sheet)",platform:"Brand+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://drive.google.com/file/d/1kyZb-lgxVpup7iVrgkkdA3sUtOUm5vwg/view"},
+  {title:"Marketplace Overview (Supply One Sheet)",platform:"Brand+ Marketplace",type:"One Sheet",audience:"Supply",url:"https://drive.google.com/file/d/1pf-C1lVey6CSp7FfGjq-gcIJUU8a437_/view"},
+  {title:"Native Ads",platform:"Brand+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1yTPbUFAIg43yfRIOP1Ke8DWOrM8c0vB1J5uN1RhSYes/edit"},
+  {title:"CTV — Interactive Ads (with ITG)",platform:"Brand+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1ZrqdcupSd9IW0J0_Glh2JXnjz2IuLVLd2x0jpmL9xSM/edit"},
+  {title:"Introduction to HyprMX",platform:"Brand+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1CrFrMbPcYTAyRLNyFf4RmPkPHBrFky4P3wG66ripFak/edit"},
+  {title:"Deals — Always On (Deck)",platform:"Brand+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1sap6hFoC6q70McwOC_FonFp8OXMBr1uWE-tXCqBtMzs/edit"},
+  {title:"CTV Overview — For Brand Buyers (Sheet)",platform:"Brand+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://drive.google.com/file/d/1-coUGWVWJ0BVFWFhw0kQcSRhGfqijf1Y/view"},
+  {title:"Web Overview — For Sellers",platform:"Brand+ Marketplace",type:"One Sheet",audience:"Supply",url:"https://drive.google.com/file/d/1r5ubiauoEO9mkH-NzHzp5TdDPQ-qIVDa/view"},
+  {title:"Web — Integrations (Supply)",platform:"Brand+ Marketplace",type:"One Sheet",audience:"Supply",url:"https://drive.google.com/file/d/1VPrMF8HxEK0aLK4jt7HaFDCwRJGBj5ei/view"},
+  {title:"Web Overview — For Buyers",platform:"Brand+ Marketplace",type:"One Sheet",audience:"Demand",url:"https://drive.google.com/file/d/1T4bvpaQW4gQU1tIcKaGi6wOpwHrK-4h0/view"},
+  {title:"Technical Guide — Cookie Syncing (Demand)",platform:"Brand+ Marketplace",type:"Guide",audience:"Demand",url:"https://drive.google.com/file/d/1gQ1CTZw0Zh54ejbuok1bBtq961FTIeFR/view"},
+  {title:"Technical Guide — Cookie Syncing (Supply)",platform:"Brand+ Marketplace",type:"Guide",audience:"Supply",url:"https://drive.google.com/file/d/1HgtRxHGpmUr3haLMYyKjzEyO0e5817Mo/view"},
+  {title:"Reporting API Onboarding (Demand)",platform:"Brand+ Marketplace",type:"Presentation",audience:"Demand",url:"https://docs.google.com/presentation/d/1M2xSdTEZzKx8poHyCFkAVYHT7ktAmtLptFSMTvnfwy0/edit"},
+  {title:"Reporting API Onboarding (Supply)",platform:"Brand+ Marketplace",type:"Presentation",audience:"Supply",url:"https://docs.google.com/presentation/d/1XDva0MoMbwT53dJZVDvh7S2UZJuUl9urekz47jt_QV8/edit"},
+];
+
+const SYSTEM_PROMPT=`You are a sales enablement assistant for Verve, an ad tech company. Answer questions about Verve's marketing and sales materials concisely and practically.
+
+Verve's products:
+- Performance+ Marketplace: mobile in-app programmatic, SDK-based (HyBid), gaming/app publisher focus, DSP demand
+- Brand+ Marketplace: omnichannel (mobile, CTV, web, DOOH), deals/PMP, brand advertisers and agencies. Smaato is Verve's own SSP infrastructure (not third-party).
+
+Full materials library:
+${MATERIALS.map(m=>`- "${m.title}" | ${m.platform} | ${m.audience} | ${m.type} | URL: ${m.url}`).join('\n')}
+
+Be specific and concise. Recommend materials by name and explain briefly why. Always reference the exact title so the UI can match and show action buttons.`;
+
+let history=[],filters={platform:'All',audience:'All'},loading=false,pack=[],recentlyViewed=[];
+
+// API KEY MANAGEMENT
+function saveKey(){
+  const k=document.getElementById('apiKeyInput').value.trim();
+  if(!k||!k.startsWith('sk-')){alert('Please enter a valid Anthropic API key starting with sk-');return;}
+  localStorage.setItem('verve_api_key',k);
+  document.getElementById('apiKeyScreen').style.display='none';
+}
+function changeKey(){
+  localStorage.removeItem('verve_api_key');
+  document.getElementById('apiKeyInput').value='';
+  document.getElementById('apiKeyScreen').style.display='flex';
+}
+function getKey(){return localStorage.getItem('verve_api_key');}
+
+// Check on load
+window.addEventListener('load',function(){
+  if(getKey()){document.getElementById('apiKeyScreen').style.display='none';}
+  document.getElementById('apiKeyInput').addEventListener('keydown',function(e){if(e.key==='Enter')saveKey();});
+  renderLibrary();
+});
+
+function switchTab(tab,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab,.pack-btn').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(tab==='library')renderLibrary();
+  if(tab==='pack')renderPack();
+}
+
+const inp=document.getElementById('chatInput');
+const sbtn=document.getElementById('sendBtn');
+inp.addEventListener('input',function(){
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,100)+'px';
+  sbtn.disabled=!this.value.trim()||loading;
+  sbtn.className=(this.value.trim()&&!loading)?'ready':'';
+});
+inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+function ask(q){inp.value=q;inp.dispatchEvent(new Event('input'));sendMessage();}
+
+async function sendMessage(){
+  const text=inp.value.trim();
+  if(!text||loading)return;
+  const apiKey=getKey();
+  if(!apiKey){changeKey();return;}
+  const es=document.getElementById('emptyState');
+  if(es)es.remove();
+  inp.value='';inp.style.height='auto';
+  sbtn.disabled=true;sbtn.className='';
+  loading=true;
+  history.push({role:'user',content:text});
+  appendMsg('user',text,[]);
+  const t=showTyping();
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM_PROMPT,messages:history})
+    });
+    const data=await res.json();
+    if(data.error){throw new Error(data.error.message||'API error');}
+    const reply=data.content?.[0]?.text||'Something went wrong — please try again.';
+    history.push({role:'assistant',content:reply});
+    t.remove();
+    const mentioned=MATERIALS.filter(m=>reply.includes(m.title));
+    appendMsg('assistant',reply,mentioned);
+  }catch(err){
+    t.remove();
+    appendMsg('assistant','Error: '+err.message+'. Check your API key is valid.',[]);
+  }
+  loading=false;
+  sbtn.disabled=!inp.value.trim();
+  sbtn.className=inp.value.trim()?'ready':'';
+}
+
+function appendMsg(role,text,materials){
+  const c=document.getElementById('chatMessages');
+  const d=document.createElement('div');
+  d.className='message '+role;
+  let html=`<div class="bubble">${esc(text)}</div>`;
+  if(materials&&materials.length>0){
+    html+=`<div class="bubble-actions">`;
+    materials.forEach(m=>{
+      const i=MATERIALS.indexOf(m);
+      html+=`<a class="open-btn" href="${m.url}" target="_blank" rel="noopener noreferrer" onclick="trackView('${esc(m.title)}','${m.url}')">↗ ${esc(m.title)}</a>`;
+      html+=`<button class="add-pack-btn" onclick="addToPack(${i})">+ Pack</button>`;
+    });
+    html+=`</div>`;
+  }
+  d.innerHTML=html;
+  c.appendChild(d);
+  d.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+function showTyping(){
+  const c=document.getElementById('chatMessages');
+  const d=document.createElement('div');
+  d.className='typing';
+  d.innerHTML=`<div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  c.appendChild(d);
+  d.scrollIntoView({behavior:'smooth',block:'end'});
+  return d;
+}
+
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>');}
+
+function trackView(title,url){
+  recentlyViewed=recentlyViewed.filter(r=>r.title!==title);
+  recentlyViewed.unshift({title,url});
+  if(recentlyViewed.length>6)recentlyViewed=recentlyViewed.slice(0,6);
+  renderRecent();
+}
+
+function renderRecent(){
+  const sec=document.getElementById('recentSection');
+  const chips=document.getElementById('recentChips');
+  if(recentlyViewed.length===0){sec.style.display='none';return;}
+  sec.style.display='block';
+  chips.innerHTML=recentlyViewed.map(r=>`<a class="recent-chip" href="${r.url}" target="_blank" rel="noopener noreferrer" onclick="trackView('${esc(r.title)}','${r.url}')">${esc(r.title)}</a>`).join('');
+}
+
+function setFilter(type,value,btn){
+  filters[type]=value;
+  document.querySelectorAll(`[data-f="${type}"]`).forEach(b=>b.className='filter-btn');
+  if(type==='platform'){btn.className='filter-btn fp';}
+  else{const m={All:'faa',Demand:'fad',Supply:'fas'};btn.className='filter-btn '+(m[value]||'faa');}
+  renderLibrary();
+}
+
+function renderLibrary(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const filtered=MATERIALS.filter(m=>{
+    const p=filters.platform==='All'||m.platform===filters.platform;
+    const a=filters.audience==='All'||m.audience===filters.audience;
+    const s=!q||m.title.toLowerCase().includes(q)||m.platform.toLowerCase().includes(q)||m.type.toLowerCase().includes(q);
+    return p&&a&&s;
+  });
+  const linked=filtered.filter(m=>m.url).length;
+  document.getElementById('resultsCount').textContent=`${filtered.length} material${filtered.length!==1?'s':''} · ${linked} linked`;
+  document.getElementById('libCount').textContent=MATERIALS.length;
+  document.getElementById('footerCount').textContent=`${MATERIALS.filter(m=>m.url).length} of ${MATERIALS.length} materials linked`;
+  const tMap={Demand:'td',Supply:'ts'};
+  const sp=p=>p.replace(' Marketplace','');
+  document.getElementById('materialList').innerHTML=filtered.map(m=>{
+    const i=MATERIALS.indexOf(m);
+    const tag=`<span class="audience-tag ${tMap[m.audience]||'td'}">${m.audience}</span>`;
+    const meta=`<span class="meta-text">${sp(m.platform)}</span><span class="meta-dot">·</span><span class="meta-text">${m.type}</span>`;
+    const inPk=pack.includes(i);
+    return`<div class="material-card${inPk?' in-pack':''}">
+      <div class="material-info"><div class="material-title">${m.title}</div><div class="material-meta">${meta}</div></div>
+      <div class="material-right">
+        ${tag}
+        <button class="card-add-btn${inPk?' added':''}" title="${inPk?'In pack':'Add to pack'}" onclick="addToPack(${i})">+</button>
+        <button class="copy-btn" title="Copy link" onclick="copyLink('${m.url}','${esc(m.title)}')">🔗</button>
+        <a class="ext-icon" href="${m.url}" target="_blank" rel="noopener noreferrer" onclick="trackView('${esc(m.title)}','${m.url}')">↗</a>
+      </div>
+    </div>`;
+  }).join('');
+  renderRecent();
+}
+
+function copyLink(url,title){navigator.clipboard.writeText(url).then(()=>showToast('Link copied: '+title));}
+
+function addToPack(i){
+  const m=MATERIALS[i];
+  if(!m.url)return;
+  if(pack.includes(i)){pack=pack.filter(x=>x!==i);showToast('Removed from pack');}
+  else{pack.push(i);showToast('Added: '+m.title);}
+  updatePackBtn();renderLibrary();
+}
+
+function updatePackBtn(){
+  const btn=document.getElementById('packBtn');
+  const cnt=document.getElementById('packCount');
+  cnt.textContent=pack.length;
+  cnt.style.display=pack.length>0?'flex':'none';
+  btn.className=pack.length>0?'pack-btn has-items':'pack-btn';
+}
+
+function clearPack(){pack=[];updatePackBtn();renderPack();renderLibrary();showToast('Pack cleared');}
+
+function renderPack(){
+  const el=document.getElementById('packItems');
+  const preview=document.getElementById('packPreview');
+  if(pack.length===0){
+    el.innerHTML=`<div class="pack-empty"><div class="pack-empty-icon">📦</div><div class="pack-empty-text">No materials yet.<br>Add them from the Library or from AI recommendations.</div></div>`;
+    preview.style.display='none';return;
+  }
+  const tMap={Demand:'td',Supply:'ts'};
+  el.innerHTML=pack.map(i=>{
+    const m=MATERIALS[i];
+    return`<div class="pack-item">
+      <div class="material-info"><div class="pack-item-title">${m.title}</div><div class="pack-item-meta">${m.platform.replace(' Marketplace','')} · ${m.type}</div></div>
+      <div class="pack-item-right">
+        <span class="audience-tag ${tMap[m.audience]||'td'}">${m.audience}</span>
+        <a href="${m.url}" target="_blank" rel="noopener noreferrer" style="font-size:14px;color:var(--muted);text-decoration:none;" onclick="trackView('${esc(m.title)}','${m.url}')">↗</a>
+        <button class="remove-btn" onclick="removePack(${i})">×</button>
+      </div>
+    </div>`;
+  }).join('');
+  const lines=pack.map(i=>{const m=MATERIALS[i];return`• ${m.title}\n  ${m.url}`;}).join('\n\n');
+  document.getElementById('packPreviewBody').textContent=`Hi [name],\n\nPlease find the Verve materials we discussed below:\n\n${lines}\n\nLet me know if you have any questions.\n\nThanks`;
+  preview.style.display='block';
+}
+
+function removePack(i){pack=pack.filter(x=>x!==i);updatePackBtn();renderPack();renderLibrary();}
+function copyPack(){navigator.clipboard.writeText(pack.map(i=>`${MATERIALS[i].title}: ${MATERIALS[i].url}`).join('\n')).then(()=>showToast(pack.length+' links copied'));}
+function copyPreview(){navigator.clipboard.writeText(document.getElementById('packPreviewBody').textContent).then(()=>showToast('Email copied to clipboard'));}
+function openEmail(){
+  const items=pack.map(i=>MATERIALS[i]);
+  const body=encodeURIComponent(`Hi,\n\nPlease find the Verve materials we discussed below:\n\n${items.map(m=>`• ${m.title}: ${m.url}`).join('\n')}\n\nLet me know if you have any questions.\n\nThanks`);
+  window.location.href=`mailto:?subject=${encodeURIComponent('Verve materials')}&body=${body}`;
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function openModal(){document.getElementById('modalOverlay').classList.add('open');}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
