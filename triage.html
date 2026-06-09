@@ -85,4 +85,197 @@
   .weight-card { background: #0d1117; border: 1px solid #1a1f2e; border-radius: 8px; padding: 10px 12px; }
   .weight-dot { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 6px; }
   .weight-pct { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 2px; font-family: 'IBM Plex Mono', monospace; }
-  .weight-label
+  .weight-label { font-size: 12px; color: #94a3b8; line-height: 1.3; }
+  .loading-box { background: #0d1117; border: 1px solid #21262d; border-radius: 12px; padding: 40px 24px; text-align: center; margin-bottom: 24px; }
+  .spinner {
+    width: 24px; height: 24px; border: 2px solid #1e293b;
+    border-top-color: #818cf8; border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  .loading-text { color: #475569; font-size: 13px; letter-spacing: 0.05em; }
+  .error-box { background: #1c0000; border: 1px solid #7f1d1d; border-radius: 8px; padding: 12px 16px; color: #fca5a5; font-size: 13px; margin-bottom: 20px; }
+  .result-card { animation: fadeUp 0.4s ease forwards; margin-bottom: 32px; }
+  .result-header { border-radius: 12px 12px 0 0; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom-width: 1px; border-bottom-style: solid; }
+  .result-tier-label { font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .result-tier-action { font-size: 13px; color: #94a3b8; margin-top: 2px; }
+  .result-score { font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 900; line-height: 1; }
+  .result-body { background: #0d1117; border: 1px solid #21262d; border-top: none; border-radius: 0 0 12px 12px; padding: 20px 24px; }
+  .summary { color: #cbd5e1; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .badge { border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; border-width: 1px; border-style: solid; }
+  .score-row { margin-bottom: 12px; }
+  .score-label-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .score-dim-label { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; }
+  .score-weight { font-size: 11px; color: #475569; }
+  .bar-row { display: flex; align-items: center; gap: 8px; }
+  .bar-track { flex: 1; height: 6px; background: #1a1a2e; border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+  .score-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #94a3b8; min-width: 20px; text-align: right; }
+  .score-desc { font-size: 12px; color: #475569; margin-top: 4px; }
+  .rationale-box { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .box-title { font-size: 11px; font-weight: 700; color: #4b5563; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; }
+  .rationale-text { color: #94a3b8; font-size: 13px; line-height: 1.65; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .signal-item, .missing-item { display: flex; gap: 6px; margin-bottom: 6px; align-items: flex-start; }
+  .signal-icon { color: #818cf8; flex-shrink: 0; margin-top: 1px; }
+  .missing-icon { color: #f59e0b; flex-shrink: 0; margin-top: 1px; }
+  .item-text { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+  .section-label { font-size: 11px; font-weight: 700; color: #4b5563; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; font-family: 'IBM Plex Mono', monospace; }
+  .history-section { border-top: 1px solid #1a1f2e; padding-top: 24px; }
+  .history-row { display: flex; align-items: center; justify-content: space-between; background: #0d1117; border: 1px solid #1a1f2e; border-radius: 8px; padding: 10px 14px; cursor: pointer; margin-bottom: 6px; transition: border-color 0.15s; }
+  .history-row:hover { border-color: #334155; }
+  .history-name { font-size: 14px; color: #cbd5e1; }
+  .history-right { display: flex; align-items: center; gap: 10px; }
+  .history-score { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 700; }
+  .history-tier { font-size: 11px; border-radius: 4px; padding: 2px 8px; font-weight: 700; letter-spacing: 0.04em; border-width: 1px; border-style: solid; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #090d13; }
+  ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav class="nav">
+    <a href="/" class="nav-logo">VERVE</a>
+    <a href="/" class="nav-back">← Back to library</a>
+  </nav>
+  <div class="header">
+    <div class="header-tag">
+      <div class="pulse-dot"></div>
+      <span class="tag-text">EMEA Demand BD</span>
+    </div>
+    <h1>Partner Triage</h1>
+    <p class="subtitle">Evaluate inbound BD enquiries against unique demand, commercial quality, operational lift, and Verve fit. Weighted score drives engagement tier recommendation.</p>
+  </div>
+  <div class="card">
+    <label>Company Name</label>
+    <input type="text" id="company" placeholder="e.g. Velonium, Adikteev, Medialab..." />
+    <label>Context (optional)</label>
+    <textarea id="context" rows="3" placeholder="e.g. Reached out about P+ access, claiming brand-direct pharma budgets. German-based. Want to understand their setup before responding."></textarea>
+    <button id="evalBtn" onclick="runEvaluate()">Evaluate Partner →</button>
+  </div>
+  <div class="weights-grid">
+    <div class="weight-card">
+      <div class="weight-dot" style="background:#818cf8"></div>
+      <div class="weight-pct">30%</div>
+      <div class="weight-label">Demand Uniqueness</div>
+    </div>
+    <div class="weight-card">
+      <div class="weight-dot" style="background:#34d399"></div>
+      <div class="weight-pct">25%</div>
+      <div class="weight-label">Commercial Quality</div>
+    </div>
+    <div class="weight-card">
+      <div class="weight-dot" style="background:#fb923c"></div>
+      <div class="weight-pct">20%</div>
+      <div class="weight-label">Operational Lift</div>
+    </div>
+    <div class="weight-card">
+      <div class="weight-dot" style="background:#38bdf8"></div>
+      <div class="weight-pct">25%</div>
+      <div class="weight-label">Verve Fit</div>
+    </div>
+  </div>
+  <div id="error" class="error-box" style="display:none"></div>
+  <div id="loading" class="loading-box" style="display:none">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">Evaluating...</div>
+  </div>
+  <div id="result"></div>
+  <div id="history"></div>
+</div>
+<script>
+const TIERS = {
+  high:   { label: "Engage - Priority",  color: "#22c55e", bg: "#052e16", border: "#166534", action: "Full BD process. Steve loop-in, contract fast-track." },
+  medium: { label: "Engage - Standard",  color: "#f59e0b", bg: "#1c1008", border: "#92400e", action: "Standard onboarding. Delegate to Kim/Zenda based on product fit." },
+  low:    { label: "Deprioritise",        color: "#f97316", bg: "#1c0a00", border: "#9a3412", action: "Minimal investment. Aka-level if any follow-up needed." },
+  pass:   { label: "Pass",               color: "#ef4444", bg: "#1c0000", border: "#991b1b", action: "Decline or no-reply. Document reason." }
+};
+const DIMS = [
+  { id: "demand_uniqueness", label: "Demand Uniqueness", weight: "30%", color: "#818cf8", desc: "Incremental budgets/verticals not in existing book", invert: false },
+  { id: "commercial_quality", label: "Commercial Quality", weight: "25%", color: "#34d399", desc: "Payment risk, direct vs intermediary, stability", invert: false },
+  { id: "operational_lift", label: "Operational Lift", weight: "20%", color: "#fb923c", desc: "Integration and ongoing maintenance burden (lower = worse)", invert: true },
+  { id: "verve_fit", label: "Verve Fit", weight: "25%", color: "#38bdf8", desc: "EMEA relevance, P+/B+ match, 12-month scale", invert: false }
+];
+let sessionHistory = [];
+async function runEvaluate() {
+  const company = document.getElementById('company').value.trim();
+  const context = document.getElementById('context').value.trim();
+  if (!company) return;
+  const btn = document.getElementById('evalBtn');
+  btn.disabled = true;
+  document.getElementById('error').style.display = 'none';
+  document.getElementById('result').innerHTML = '';
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('loadingText').textContent = 'Researching ' + company + '...';
+  try {
+    const resp = await fetch('/api/triage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ company, context })
+    });
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.error || 'Request failed');
+    }
+    const parsed = await resp.json();
+    document.getElementById('loading').style.display = 'none';
+    renderResult(company, parsed);
+    sessionHistory.unshift({ company, result: parsed });
+    renderHistory();
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    const errEl = document.getElementById('error');
+    errEl.textContent = 'Evaluation failed: ' + e.message;
+    errEl.style.display = 'block';
+    console.error(e);
+  }
+  btn.disabled = false;
+}
+function barPct(score, invert) {
+  const v = invert ? (11 - score) : score;
+  return ((v - 1) / 9 * 100).toFixed(1);
+}
+function overlapColor(risk) {
+  return { low: "#22c55e", medium: "#f59e0b", high: "#ef4444" }[risk] || "#94a3b8";
+}
+function renderResult(company, r) {
+  const tier = TIERS[r.engagement_tier] || TIERS.pass;
+  const oc = overlapColor(r.demand_overlap_risk);
+  const ptLabels = { dsp: "Direct DSP", hybrid_ssp: "Hybrid SSP", reseller: "Reseller", trading_desk: "Trading Desk", unknown: "Type Unknown" };
+  const ptColors = { dsp: "#34d399", hybrid_ssp: "#f59e0b", reseller: "#ef4444", trading_desk: "#f59e0b", unknown: "#64748b" };
+  const ptColor = ptColors[r.partner_type] || "#64748b";
+  const ptLabel = ptLabels[r.partner_type] || r.partner_type || "Unknown";
+  const scoresHtml = DIMS.map(function(d) {
+    return '<div class="score-row"><div class="score-label-row"><span class="score-dim-label">' + d.label + '</span><span class="score-weight">' + d.weight + ' weight</span></div><div class="bar-row"><div class="bar-track"><div class="bar-fill" style="width:' + barPct(r.scores[d.id], d.invert) + '%;background:' + d.color + '"></div></div><span class="score-num">' + r.scores[d.id] + '</span></div><div class="score-desc">' + d.desc + '</div></div>';
+  }).join('');
+  const signalsHtml = (r.key_signals || []).map(function(s) {
+    return '<div class="signal-item"><span class="signal-icon">›</span><span class="item-text">' + s + '</span></div>';
+  }).join('');
+  const missingHtml = (r.missing_info || []).map(function(m) {
+    return '<div class="missing-item"><span class="missing-icon">?</span><span class="item-text">' + m + '</span></div>';
+  }).join('');
+  document.getElementById('result').innerHTML = '<div class="section-label" style="margin-bottom:12px">Evaluation: ' + company + '</div><div class="result-card"><div class="result-header" style="background:' + tier.bg + ';border-bottom-color:' + tier.border + '"><div><div class="result-tier-label" style="color:' + tier.color + '">' + tier.label + '</div><div class="result-tier-action">' + tier.action + '</div></div><div class="result-score" style="color:' + tier.color + '">' + Math.round(r.weighted_score) + '</div></div><div class="result-body"><p class="summary">' + r.company_summary + '</p><div class="badges"><span class="badge" style="color:' + oc + ';background:' + oc + '22;border-color:' + oc + '44">' + r.demand_overlap_risk + ' overlap risk</span><span class="badge" style="color:' + ptColor + ';background:' + ptColor + '22;border-color:' + ptColor + '44">' + ptLabel + '</span><span class="badge" style="color:#94a3b8;background:#1e293b;border-color:#334155">' + r.recommended_product + '</span></div><div style="margin-bottom:20px">' + scoresHtml + '</div><div class="rationale-box"><div class="box-title">Rationale</div><p class="rationale-text">' + r.rationale + '</p></div><div class="two-col"><div><div class="box-title">Key Signals</div>' + signalsHtml + '</div><div><div class="box-title">Still Need to Know</div>' + missingHtml + '</div></div></div></div>';
+}
+function renderHistory() {
+  if (sessionHistory.length < 2) return;
+  const rows = sessionHistory.slice(1).map(function(h) {
+    const tier = TIERS[h.result.engagement_tier] || TIERS.pass;
+    return '<div class="history-row" onclick="loadHistory(\'' + h.company.replace(/'/g, "\\'") + '\')"><span class="history-name">' + h.company + '</span><div class="history-right"><span class="history-score" style="color:' + tier.color + '">' + Math.round(h.result.weighted_score) + '</span><span class="history-tier" style="color:' + tier.color + ';background:' + tier.bg + ';border-color:' + tier.border + '">' + tier.label + '</span></div></div>';
+  }).join('');
+  document.getElementById('history').innerHTML = '<div class="history-section"><div class="section-label">Session History</div>' + rows + '</div>';
+}
+function loadHistory(company) {
+  const entry = sessionHistory.find(function(h) { return h.company === company; });
+  if (!entry) return;
+  document.getElementById('company').value = company;
+  document.getElementById('context').value = '';
+  renderResult(company, entry.result);
+}
+document.getElementById('company').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') runEvaluate();
+});
+</script>
+</body>
+</html>
