@@ -2,10 +2,15 @@
   "version": 2,
   "builds": [
     { "src": "api/chat.js", "use": "@vercel/node" },
-    { "src": "index.html", "use": "@vercel/static" }
+    { "src": "api/triage.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "triage.html", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/api/triage", "dest": "/api/triage.js" },
+    { "src": "/triage", "dest": "/triage.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
+Once pasted, click Commit changes and commit to main.Sonnet 4.6 Low
